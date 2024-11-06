@@ -53,6 +53,8 @@ class BannersController extends Controller
             $Banners = Banner::orderby('section_id', 'asc')->orderby('row_no',
                 'asc')->paginate(config('smartend.backend_pagination'));
         }
+
+        
         return view("dashboard.banners.list", compact("Banners", "GeneralWebmasterSections", "WebmasterBanners"));
     }
 
