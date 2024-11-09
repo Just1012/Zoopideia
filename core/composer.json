@@ -8,6 +8,7 @@
         "php": "^8.1",
         "alexusmai/laravel-file-manager": "^3.0",
         "anhskohbo/no-captcha": "^3.5",
+        "brian2694/laravel-toastr": "^5.59",
         "drewm/mailchimp-api": "^2.5",
         "guzzlehttp/guzzle": "^7.2",
         "intervention/image": "^2.7",

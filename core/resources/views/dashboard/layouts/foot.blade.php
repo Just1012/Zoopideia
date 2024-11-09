@@ -28,6 +28,8 @@
 <script src="{{ asset('assets/dashboard/js/scripts/ui-scroll-to.js') }}" defer></script>
 <script src="{{ asset('assets/dashboard/js/scripts/ui-toggle-class.js') }}" defer></script>
 <script src="{{ asset('assets/dashboard/js/sweetalert/sweetalert.min.js') }}"></script>
+<script src="https://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+{!! Toastr::message() !!}
 
 
 <script src="{{ asset('assets/dashboard/js/scripts/app.js') }}?v={{ Helper::system_version() }}" defer></script>

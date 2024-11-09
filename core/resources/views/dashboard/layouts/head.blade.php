@@ -27,6 +27,7 @@
 <link rel="stylesheet" href="{{ asset('assets/dashboard/css/app.css') }}?v={{ Helper::system_version() }}" type="text/css"/>
 <link rel="stylesheet" href="{{ asset('assets/dashboard/css/font.css') }}?v={{ Helper::system_version() }}" type="text/css"/>
 <link rel="stylesheet" href="{{ asset('assets/dashboard/css/topic.css') }}?v={{ Helper::system_version() }}" type="text/css"/>
+<link rel="stylesheet" href="https://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
 
 @if( @Helper::currentLanguage()->direction=="rtl")
     <link rel="stylesheet" href="{{ asset('assets/dashboard/css/bootstrap-rtl/dist/bootstrap-rtl.css') }}?v={{ Helper::system_version() }}">
