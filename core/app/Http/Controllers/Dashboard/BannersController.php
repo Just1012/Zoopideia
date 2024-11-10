@@ -15,9 +15,11 @@ use App\Models\WebmasterBanner;
 use App\Models\WebmasterSection;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Mail\TestMail;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
+use Mail;
 
 
 class BannersController extends Controller
@@ -61,8 +63,6 @@ class BannersController extends Controller
                 'asc'
             )->paginate(config('smartend.backend_pagination'));
         }
-
-        toastr()->success('bsfhbf');
         return view("dashboard.banners.list", compact("Banners", "GeneralWebmasterSections", "WebmasterBanners"));
     }
 

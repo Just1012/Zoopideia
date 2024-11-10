@@ -71,7 +71,6 @@ class WebmasterSettingsController extends Controller
         $WebmasterSetting = WebmasterSetting::find(1);
         if (!empty($WebmasterSetting)) {
             return view("dashboard.system_settings.home", compact("WebmasterSetting", "GeneralWebmasterSections", "ParentMenus", "WebmasterBanners", "ContactsGroups", "SitePages", "PermissionsGroups", "Countries", "Languages"));
-
         } else {
             return redirect()->route('adminHome');
         }
@@ -703,7 +702,6 @@ class WebmasterSettingsController extends Controller
         try {
             // empty old translation table
             DB::table('ltm_translations')->truncate();
-
         } catch (\Exception $e) {
         }
         return true;
@@ -742,7 +740,6 @@ class WebmasterSettingsController extends Controller
                 $table->dropColumn('seo_keywords_' . $code);
                 $table->dropColumn('seo_url_slug_' . $code);
             });
-
         } catch (\Exception $e) {
         }
         try {
@@ -751,7 +748,6 @@ class WebmasterSettingsController extends Controller
                 $table->dropColumn('title_' . $code);
                 $table->dropColumn('link_' . $code);
             });
-
         } catch (\Exception $e) {
         }
         try {
@@ -760,7 +756,6 @@ class WebmasterSettingsController extends Controller
                 $table->dropColumn('title_' . $code);
                 $table->dropColumn('details_' . $code);
             });
-
         } catch (\Exception $e) {
         }
         try {
@@ -770,7 +765,6 @@ class WebmasterSettingsController extends Controller
                     $table->dropColumn('title_' . $code);
                 });
             }
-
         } catch (\Exception $e) {
         }
         try {
@@ -780,7 +774,6 @@ class WebmasterSettingsController extends Controller
                 $table->dropColumn('details_' . $code);
                 $table->dropColumn('file_' . $code);
             });
-
         } catch (\Exception $e) {
         }
         try {
@@ -788,7 +781,6 @@ class WebmasterSettingsController extends Controller
             Schema::table('attach_files', function (Blueprint $table) use ($code) {
                 $table->dropColumn('title_' . $code);
             });
-
         } catch (\Exception $e) {
         }
         try {
@@ -797,7 +789,6 @@ class WebmasterSettingsController extends Controller
                 $table->dropColumn('title_' . $code);
                 $table->dropColumn('details_' . $code);
             });
-
         } catch (\Exception $e) {
         }
         try {
@@ -809,7 +800,6 @@ class WebmasterSettingsController extends Controller
                 $table->dropColumn('seo_keywords_' . $code);
                 $table->dropColumn('seo_url_slug_' . $code);
             });
-
         } catch (\Exception $e) {
         }
         try {
@@ -817,7 +807,6 @@ class WebmasterSettingsController extends Controller
             Schema::table('webmaster_banners', function (Blueprint $table) use ($code) {
                 $table->dropColumn('title_' . $code);
             });
-
         } catch (\Exception $e) {
         }
         try {
@@ -830,7 +819,6 @@ class WebmasterSettingsController extends Controller
                 $table->dropColumn('contact_t7_' . $code);
                 $table->dropColumn('style_logo_' . $code);
             });
-
         } catch (\Exception $e) {
         }
 
@@ -913,7 +901,6 @@ class WebmasterSettingsController extends Controller
                 }
             }
         } catch (\Exception $e) {
-
         }
 
         return redirect()->action('Dashboard\WebmasterSettingsController@edit')
@@ -1014,13 +1001,13 @@ class WebmasterSettingsController extends Controller
                 try {
                     $email_subject = "Test Mail From " . config('app.name');
                     $email_body = "This is a Test Mail <br>
-Mail Driver: " . $request->mail_driver . "<br>
-Mail Host: " . $request->mail_host . "<br>
-Mail Port: " . $request->mail_port . "<br>
-Mail Username: " . $request->mail_username . "<br>
-Email from: " . $request->mail_no_replay . "<br>
-Email to: " . $request->mail_test . "
-";
+                    Mail Driver: " . $request->mail_driver . "<br>
+                    Mail Host: " . $request->mail_host . "<br>
+                    Mail Port: " . $request->mail_port . "<br>
+                    Mail Username: " . $request->mail_username . "<br>
+                    Email from: " . $request->mail_no_replay . "<br>
+                    Email to: " . $request->mail_test . "
+                    ";
                     $to_email = $request->mail_test;
                     $to_name = $request->mail_test;
                     $from_email = $request->mail_no_replay;
@@ -1034,7 +1021,6 @@ Email to: " . $request->mail_test . "
                         $message->to($to_email);
                         $message->replyTo($from_email, $from_name);
                         $message->subject($email_subject);
-
                     });
 
                     return json_encode(array("stat" => "success"));
