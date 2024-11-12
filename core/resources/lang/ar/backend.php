@@ -403,7 +403,7 @@ return array(
     'signIn' => 'تسجيل الدخول',
     'keepMeSignedIn' => 'حفظ بيانات تسجيل الدخول',
     'signedInToControl' => 'تسجيل الدخول إلى لوحة التحكم',
-    'control' => 'لوحة التحكم',
+    'control' => 'Zoopedia',
     'resetPassword' => 'إستعادة كلمة المرور',
     'confirmPassword' => 'تاكيد كلمة المرور',
     'newPassword' => 'كلمة مرور جديدة',

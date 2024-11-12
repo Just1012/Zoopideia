@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone_number',
         'photo',
         'permissions_id',
         'status',
@@ -61,6 +62,10 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+    public function getProfilePhotoUrlAttribute()
+    {
+        return  $this->photo;
+    }
     // relation with Permissions
     public function permissionsGroup()
     {

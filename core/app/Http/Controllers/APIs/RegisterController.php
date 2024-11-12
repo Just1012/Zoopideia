@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\APIs;
 
 use App\Http\Controllers\Controller;
 use App\Models\Otp;
@@ -17,40 +17,16 @@ use Helper;
 class RegisterController extends Controller
 {
     use RegistersUsers;
-    protected $redirectTo = '/admin';
     public function __construct()
     {
         $this->middleware('guest');
     }
-
-
-    // protected function validator(array $data)
-    // {
-    //     return Validator::make($data, [
-    //         'name' => ['required', 'string', 'max:255'],
-    //         'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-    //         'password' => ['required', 'string', 'min:8', 'confirmed'],
-    //     ]);
-    // }
-
-
-    // protected function create(array $data)
-    // {
-    //     return User::create([
-    //         'name' => $data['name'],
-    //         'email' => $data['email'],
-    //         'password' => Hash::make($data['password']),
-    //         'status' => true,
-    //         'permissions_id' => Helper::GeneralWebmasterSettings("permission_group"),    // Permission Group ID
-    //     ]);
-    // }
-
-
     public function createOtp(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'phone' => ['required', 'string', 'min:11', 'max:15', 'unique:users'],
+            'phone_number' => ['required', 'string', 'min:11', 'max:15', 'unique:users'],
         ]);
+
 
         if ($validator->fails()) {
             return apiResponse([
@@ -62,7 +38,7 @@ class RegisterController extends Controller
 
         // $otpCode = rand(1000, 9999);
         Otp::create([
-            'phone_number' => $request->phone,
+            'phone_number' => $request->phone_number,
             'otp_code' => 123456,
             'is_successful' => false,
             'attempted_at' => now(),
@@ -83,7 +59,7 @@ class RegisterController extends Controller
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'phone' => ['required', 'string', 'min:11', 'max:15', 'unique:users'],
+            'phone_number' => ['required', 'string', 'min:11', 'max:15', 'unique:users'],
             'otp' => ['required', 'string', 'size:6'],  // Adjust OTP length to 6 digits
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -98,7 +74,7 @@ class RegisterController extends Controller
         }
 
         // Step 3: Verify OTP
-        $otp = Otp::where('phone_number', $request->phone)->latest()->first();
+        $otp = Otp::where('phone_number', $request->phone_number)->latest()->first();
         if (!$otp || $otp->otp_code != $request->otp) {
             return apiResponse([
                 'status' => 422,
@@ -110,12 +86,13 @@ class RegisterController extends Controller
         $otp->is_successful = true;
         $otp->save();
 
+
         // Step 4: Create the user after validation
         $fullName = $request->input('first_name') . ' ' . $request->input('last_name');
         $user = User::create([
             'name' => $fullName,
             'email' => $request->input('email'),
-            'phone' => $request->input('phone'),
+            'phone_number' => $request->input('phone_number'),
             'password' => Hash::make($request->input('password')),
             'permissions_id' => Helper::GeneralWebmasterSettings("permission_group"),    // Permission Group ID
             'status' => 1,
