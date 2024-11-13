@@ -14,7 +14,7 @@ class LoginController extends Controller
     {
         // Validate input
         $validator = Validator::make($request->all(), [
-            'identifier' => 'required|string', // Can be email or phone number
+            'identifier' => 'required|string', // Can be email, phone number, or username
             'password' => 'required|string',
         ]);
 
@@ -28,10 +28,16 @@ class LoginController extends Controller
 
         $validatedData = $validator->valid();
 
-        // Determine if the identifier is an email or phone number
-        $fieldType = filter_var($validatedData['identifier'], FILTER_VALIDATE_EMAIL) ? 'email' : 'phone_number';
+        // Determine if the identifier is an email, phone number, or username
+        if (filter_var($validatedData['identifier'], FILTER_VALIDATE_EMAIL)) {
+            $fieldType = 'email';
+        } elseif (preg_match('/^\d{10,15}$/', $validatedData['identifier'])) {
+            $fieldType = 'phone_number'; // Assuming phone number is only digits and 10-15 characters long
+        } else {
+            $fieldType = 'userName';
+        }
 
-        // Attempt to find the user by email or phone
+        // Attempt to find the user by the determined field type
         $user = User::where($fieldType, $validatedData['identifier'])->first();
 
         // Check if the user exists and the password is correct

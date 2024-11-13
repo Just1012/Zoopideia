@@ -96,6 +96,70 @@ class ProfileController extends Controller
         ]);
     }
 
+    public function accountConfirmation(Request $request, $id)
+    {
+        if(Auth::user()->id != $id){
+            return apiResponse([
+                'status' => 403,
+                'message' => 'You have no permission to access on this data',
+            ]);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'latitude' => 'required|numeric|between:-90,90',
+            'longitude' => 'required|numeric|between:-180,180',
+            'front_id_image' => ['required', 'image', 'mimes:jpg,jpeg,png,gif', 'max:5120'],
+            'back_id_image' => ['required', 'image', 'mimes:jpg,jpeg,png,gif', 'max:5120'],
+            'address_confirmation_image' => ['required', 'image', 'mimes:jpg,jpeg,png,gif', 'max:5120'],
+        ]);
+
+        if ($validator->fails()) {
+            return apiResponse([
+                'status' => 422,
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ]);
+        }
+        $user = User::find($id);
+
+        if (!$user) {
+            return apiResponse([
+                'status' => 404,
+                'message' => 'User Not Found',
+                'errors' => $validator->errors()
+            ]);
+        }
+        $user-> latitude = $request->input('latitude');
+        $user-> longitude = $request->input('latitude');
+        $this->uploadAndAssignImage($request, 'front_id_image', $user);
+        $this->uploadAndAssignImage($request, 'back_id_image', $user);
+        $this->uploadAndAssignImage($request, 'address_confirmation_image', $user);
+        $user->save();
+
+        return apiResponse([
+            'status' => 200,
+            'message' => 'Confirmation successful! Your account is under review.',
+            'data' => $user,
+        ]);
+    }
+
+    private function uploadAndAssignImage(Request $request, $inputName, User $user)
+    {
+        if ($request->hasFile($inputName)) {
+            $fileName = time() . rand(1111, 9999) . '.' . $request->file($inputName)->getClientOriginalExtension();
+            $path = $this->getUploadPath();
+
+            $request->file($inputName)->move($path, $fileName);
+
+            // Resize and optimize the image
+            Helper::imageResize($path . $fileName);
+            Helper::imageOptimize($path . $fileName);
+
+            // Assign the uploaded file to the corresponding user attribute
+            $user->$inputName = $fileName;
+        }
+    }
+
     public function getUploadPath()
     {
         return $this->uploadPath;

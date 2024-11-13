@@ -59,8 +59,9 @@ class RegisterController extends Controller
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'userName' => ['required', 'string', 'max:255', 'unique:users'],
             'phone_number' => ['required', 'string', 'min:11', 'max:15', 'unique:users'],
-            'otp' => ['required', 'string', 'size:6'],  // Adjust OTP length to 6 digits
+            'otp' => ['required', 'string', 'size:6'],  // Assuming OTP is a 6-digit code
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
@@ -86,25 +87,29 @@ class RegisterController extends Controller
         $otp->is_successful = true;
         $otp->save();
 
-
         // Step 4: Create the user after validation
         $fullName = $request->input('first_name') . ' ' . $request->input('last_name');
         $user = User::create([
             'name' => $fullName,
             'email' => $request->input('email'),
+            'userName' => $request->input('userName'),
             'phone_number' => $request->input('phone_number'),
             'password' => Hash::make($request->input('password')),
-            'permissions_id' => Helper::GeneralWebmasterSettings("permission_group"),    // Permission Group ID
-            'status' => 1,
+            'permissions_id' => Helper::GeneralWebmasterSettings("permission_group"),
+            'latitude' => $request->input('latitude'),
+            'longitude' => $request->input('longitude'),
+            'status' => 0,
         ]);
 
-        // Step 5: Return the successful registration response
-        $result = [
-            'status' => 200,
-            'message' => 'User registered successfully!',
-            'data' => $user,
-        ];
+        // Save changes to the user model
+        $user->save();
 
-        return apiResponse($result);
+        // Step 6: Return the successful registration response
+        return apiResponse([
+            'status' => 200,
+            'message' => 'Registration successful!',
+            'data' => $user,
+        ]);
     }
+
 }

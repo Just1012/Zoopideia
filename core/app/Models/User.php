@@ -30,7 +30,12 @@ class User extends Authenticatable
         'connect_password',
         'provider_id',
         'provider',
-        'access_token'
+        'access_token',
+        'userName',
+        'longitude',
+        'latitude',
+        'address_confirmation_image',
+        'id_image'
     ];
 
     /**

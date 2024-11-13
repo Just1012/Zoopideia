@@ -48,4 +48,5 @@ Route::middleware('auth:sanctum')->group(function () {
     // Profile
     Route::get('/userProfile/{id}', 'ProfileController@userProfile');
     Route::post('/updateProfile', 'ProfileController@updateProfile');
+    Route::post('/accountConfirmation/{id}', 'ProfileController@accountConfirmation');
 });
